@@ -8,37 +8,61 @@
   <style>
 
     body {
+
       font-family: Arial;
-      background: #f5f5f5;
+      background: #f2f2f2;
       padding: 40px;
+
     }
 
     .container {
-      max-width: 700px;
+
+      max-width: 1000px;
       margin: auto;
       background: white;
-      padding: 30px;
-      border-radius: 12px;
+      padding: 40px;
+      border-radius: 20px;
+
     }
 
     input {
+
       width: 100%;
-      padding: 12px;
-      margin-top: 10px;
-      box-sizing: border-box;
+      padding: 15px;
+      font-size: 18px;
+      margin-bottom: 20px;
+
     }
 
     button {
-      margin-top: 20px;
-      padding: 12px 20px;
+
+      width: 100%;
+      padding: 15px;
+      font-size: 18px;
       cursor: pointer;
+
     }
 
-    pre {
-      margin-top: 30px;
-      background: #eee;
-      padding: 20px;
-      white-space: pre-wrap;
+    .category {
+
+      margin-top: 40px;
+
+    }
+
+    .item {
+
+      background: #f7f7f7;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 10px;
+
+    }
+
+    .price {
+
+      font-weight: bold;
+      margin-top: 10px;
+
     }
 
   </style>
@@ -59,27 +83,97 @@
     type="text"
     id="url"
     placeholder="Paste restaurant URL"
-  >
+  />
 
   <button onclick="extractMenu()">
     Extract Menu
   </button>
 
-  <pre id="result">
-Waiting...
-  </pre>
+  <div id="result"></div>
 
 </div>
 
 <script>
 
-function extractMenu() {
+async function extractMenu() {
+
+  document.getElementById("result").innerHTML =
+    "Loading menu...";
 
   const url =
     document.getElementById("url").value;
 
-  document.getElementById("result").innerText =
-    "URL RECEIVED:\n\n" + url;
+  const formData =
+    new FormData();
+
+  formData.append("url", url);
+
+  const response =
+    await fetch("/process", {
+
+      method: "POST",
+
+      body: formData
+
+    });
+
+  const data =
+    await response.json();
+
+  console.log(data);
+
+  if (!data.success) {
+
+    document.getElementById("result").innerHTML =
+      "Error: " + data.error;
+
+    return;
+
+  }
+
+  const menu =
+    JSON.parse(data.parsedMenu);
+
+  const items =
+    menu.items;
+
+  let html = "";
+
+  let currentCategory = "";
+
+  items.forEach(item => {
+
+    if (item.category !== currentCategory) {
+
+      currentCategory =
+        item.category;
+
+      html += `
+        <div class="category">
+          <h2>${currentCategory}</h2>
+        </div>
+      `;
+
+    }
+
+    html += `
+      <div class="item">
+
+        <h3>${item.name}</h3>
+
+        <p>${item.description}</p>
+
+        <div class="price">
+          ${item.price}
+        </div>
+
+      </div>
+    `;
+
+  });
+
+  document.getElementById("result").innerHTML =
+    html;
 
 }
 
