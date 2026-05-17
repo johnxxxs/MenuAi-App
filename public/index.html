@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <title>MenuAi App</title>
+
+  <style>
+
+    body {
+      font-family: Arial;
+      background: #f5f5f5;
+      padding: 40px;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      box-sizing: border-box;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px 20px;
+      cursor: pointer;
+    }
+
+    pre {
+      margin-top: 30px;
+      background: #eee;
+      padding: 20px;
+      white-space: pre-wrap;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>MenuAi App</h1>
+
+  <p>
+    Extract restaurant menus using AI
+  </p>
+
+  <input
+    type="text"
+    id="url"
+    placeholder="Paste restaurant URL"
+  >
+
+  <button onclick="extractMenu()">
+    Extract Menu
+  </button>
+
+  <pre id="result">
+Waiting...
+  </pre>
+
+</div>
+
+<script>
+
+function extractMenu() {
+
+  const url =
+    document.getElementById("url").value;
+
+  document.getElementById("result").innerText =
+    "URL RECEIVED:\n\n" + url;
+
+}
+
+</script>
+
+</body>
+</html>
