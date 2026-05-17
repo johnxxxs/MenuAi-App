@@ -202,7 +202,93 @@ Structure:
 
   }
 );
+// DISH INFO
 
+app.post("/dish-info", async (req, res) => {
+
+  try {
+
+    const dishName =
+      req.body.dishName;
+
+    const restaurant =
+      req.body.restaurant;
+
+    console.log("DISH INFO REQUEST");
+
+    console.log(dishName);
+
+    const completion =
+      await openai.chat.completions.create({
+
+        model: "gpt-4.1-mini",
+
+        messages: [
+
+          {
+            role: "system",
+            content: `
+Eres un asistente gastronómico experto.
+
+Responde SIEMPRE en español castellano.
+
+Explica los platos de manera cercana, profesional y cultural.
+
+Incluye:
+
+- descripción del plato
+- ingredientes típicos
+- origen o historia
+- curiosidades gastronómicas
+- relación cultural con la ciudad o región si aplica
+
+La respuesta debe ser agradable de leer y orientada a clientes de restaurantes.
+`
+          },
+
+          {
+            role: "user",
+            content: `
+Plato:
+${dishName}
+
+Restaurante:
+${restaurant}
+
+
+`
+          }
+
+        ]
+
+      });
+
+    const info =
+      completion.choices[0].message.content;
+
+    return res.json({
+
+      success: true,
+
+      info: info
+
+    });
+
+  } catch (error) {
+
+    console.log(error);
+
+    return res.json({
+
+      success: false,
+
+      error: error.message
+
+    });
+
+  }
+
+});
 
 // SERVER
 
