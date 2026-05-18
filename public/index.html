@@ -102,6 +102,12 @@
     type="text"
     id="url"
     placeholder="Paste restaurant URL"
+
+    <input
+  type="file"
+  id="imageFile"
+  accept="image/*"
+/>
   />
 
   <button onclick="extractMenu()">
@@ -134,6 +140,18 @@ async function extractMenu() {
     new FormData();
 
   formData.append("url", url);
+
+  const imageFile =
+  document.getElementById("imageFile").files[0];
+
+if (imageFile) {
+
+  formData.append(
+    "imageFile",
+    imageFile
+  );
+
+}
 
   const response =
     await fetch("/process", {
