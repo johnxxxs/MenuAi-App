@@ -126,7 +126,7 @@ else {
       // LIMIT TEXT
 
       const menuText =
-        text.substring(0, 5000);
+        text.substring(0, 50000);
 
       console.log("SENDING TO OPENAI");
 
