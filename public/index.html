@@ -32,6 +32,8 @@
       font-size: 18px;
       margin-bottom: 20px;
 
+      box-sizing: border-box;
+
     }
 
     button {
@@ -102,31 +104,32 @@
     type="text"
     id="url"
     placeholder="Paste restaurant URL"
+  />
 
-    <input
-  type="file"
-  id="imageFile"
-  accept="image/*"
+  <input
+    type="file"
+    id="imageFile"
+    accept="image/*"
   />
 
   <button onclick="extractMenu()">
     Extract Menu
   </button>
 
-  <div id="result"></div>
   <button onclick="exportCSV()">
 
-  Export CSV WooCommerce
+    Export CSV WooCommerce
 
-</button>
+  </button>
+
+  <div id="result"></div>
 
 </div>
 
 <script>
 
-  let currentMenu = [];
+let currentMenu = [];
 
-  
 async function extractMenu() {
 
   document.getElementById("result").innerHTML =
@@ -141,16 +144,16 @@ async function extractMenu() {
   formData.append("url", url);
 
   const imageFile =
-  document.getElementById("imageFile").files[0];
+    document.getElementById("imageFile").files[0];
 
-if (imageFile) {
+  if (imageFile) {
 
-  formData.append(
-    "imageFile",
-    imageFile
-  );
+    formData.append(
+      "imageFile",
+      imageFile
+    );
 
-}
+  }
 
   const response =
     await fetch("/process", {
@@ -290,6 +293,7 @@ async function getDishInfo(dishName, button) {
 
 }
 
+
 function exportCSV() {
 
   if (currentMenu.length === 0) {
@@ -329,7 +333,6 @@ function exportCSV() {
   a.click();
 
 }
-
 
 </script>
 
