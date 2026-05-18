@@ -109,11 +109,19 @@
   </button>
 
   <div id="result"></div>
+  <button onclick="exportCSV()">
+
+  Export CSV WooCommerce
+
+</button>
 
 </div>
 
 <script>
 
+  let currentMenu = [];
+
+  
 async function extractMenu() {
 
   document.getElementById("result").innerHTML =
@@ -155,6 +163,8 @@ async function extractMenu() {
 
   const items =
     menu.items;
+
+  currentMenu = items;
 
   let html = "";
 
@@ -262,6 +272,47 @@ async function getDishInfo(dishName, button) {
   }
 
 }
+
+function exportCSV() {
+
+  if (currentMenu.length === 0) {
+
+    alert("No menu loaded");
+
+    return;
+
+  }
+
+  let csv =
+    "Name,Description,Price,Category\n";
+
+  currentMenu.forEach(item => {
+
+    csv += `"${item.name}","${item.description}","${item.price}","${item.category}"\n`;
+
+  });
+
+  const blob =
+    new Blob([csv], {
+
+      type: "text/csv"
+
+    });
+
+  const url =
+    window.URL.createObjectURL(blob);
+
+  const a =
+    document.createElement("a");
+
+  a.href = url;
+
+  a.download = "menu.csv";
+
+  a.click();
+
+}
+
 
 </script>
 
