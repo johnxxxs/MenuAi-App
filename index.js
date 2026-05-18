@@ -1,4 +1,7 @@
-
+console.log(
+  "OPENAI:",
+  process.env.OPENAI_API_KEY
+)
 
 require("dotenv").config();
 
