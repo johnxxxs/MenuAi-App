@@ -12,7 +12,8 @@ const multer = require("multer");
 const axios = require("axios");
 const cheerio = require("cheerio");
 const OpenAI = require("openai");
-const mime = require("mime-types");
+const mimeType =
+  mime.lookup(imageFile.originalname);
 
 const app = express();
 
@@ -101,7 +102,7 @@ if (url) {
   const base64Image =
     imageBuffer.toString("base64");
 
-  const mime.lookup(imageFile.originalname);
+  .lookup(imageFile.originalname);
 
   console.log("SENDING IMAGE TO OPENAI");
 
