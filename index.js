@@ -3,7 +3,7 @@ console.log(
   process.env.OPENAI_API_KEY
 )
 
-require("dotenv").config();
+require("dotenv").config(); 
 
 const fs = require("fs");
 const pdf = require("pdf-parse").default;
@@ -13,6 +13,7 @@ const multer = require("multer");
 const axios = require("axios");
 const cheerio = require("cheerio");
 const OpenAI = require("openai");
+const mime = require("mime-types");
 
 const app = express();
 
@@ -60,9 +61,10 @@ app.post(
       console.log("URL RECEIVED:");
       console.log(url);
 
-      // VALIDATE URL
+      const imageFile =
+  req.files?.imageFile?.[0];
 
-      
+
 
       // DOWNLOAD HTML
 
@@ -85,6 +87,96 @@ if (url) {
 
   text =
     $("body").text();
+
+}
+
+  ///Analizar Imagen///
+
+  else if (imageFile) {
+
+  console.log("IMAGE RECEIVED");
+
+  const imageBuffer =
+    fs.readFileSync(imageFile.path);
+
+  const base64Image =
+    imageBuffer.toString("base64");
+
+  mime.lookup(imageFile.originalname);
+
+  console.log("SENDING IMAGE TO OPENAI");
+
+  const completion =
+    await openai.chat.completions.create({
+
+      model: "gpt-4.1-mini",
+
+      messages: [
+
+        {
+          role: "system",
+          content: `
+You are a restaurant menu parser.
+
+Extract restaurant menu items into JSON.
+
+Return ONLY JSON.
+
+Structure:
+
+{
+  "items": [
+    {
+      "category": "",
+      "name": "",
+      "description": "",
+      "price": "",
+      "image_url": ""
+    }
+  ]
+}
+`
+        },
+
+        {
+          role: "user",
+          content: [
+
+            {
+              type: "text",
+              text: "Extract this restaurant menu"
+            },
+
+            {
+              type: "image_url",
+
+              image_url: {
+
+                url:
+`data:${mimeType};base64,${base64Image}`
+
+              }
+
+            }
+
+          ]
+
+        }
+
+      ]
+
+    });
+
+  const parsedMenu =
+    completion.choices[0].message.content;
+
+  return res.json({
+
+    success: true,
+
+    parsedMenu: parsedMenu
+
+  });
 
 }
 
