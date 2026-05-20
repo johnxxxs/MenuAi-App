@@ -101,7 +101,7 @@ if (url) {
   const base64Image =
     imageBuffer.toString("base64");
 
-  mime.lookup(imageFile.originalname);
+  const mime.lookup(imageFile.originalname);
 
   console.log("SENDING IMAGE TO OPENAI");
 
