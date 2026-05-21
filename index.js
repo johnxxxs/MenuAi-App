@@ -1,10 +1,6 @@
-console.log(
-  "OPENAI:",
-  process.env.OPENAI_API_KEY
-)
-require("dotenv").config(); 
+require("dotenv").config();
 
-const fs = require("fs"); 
+const fs = require("fs");
 const pdf = require("pdf-parse").default;
 const express = require("express");
 const path = require("path");
@@ -12,8 +8,7 @@ const multer = require("multer");
 const axios = require("axios");
 const cheerio = require("cheerio");
 const OpenAI = require("openai");
-const mime =
-  require("mime-types");
+const mime = require("mime-types");
 
 const app = express();
 
@@ -44,81 +39,80 @@ app.get("/", (req, res) => {
 // PROCESS
 
 app.post(
+
   "/process",
+
   upload.fields([
     { name: "pdfFile", maxCount: 1 },
     { name: "imageFile", maxCount: 1 }
   ]),
+
   async (req, res) => {
 
     try {
 
-      const url = req.body.url;
+      const url =
+        req.body.url;
 
       const pdfFile =
-  req.files?.pdfFile?.[0];
-
-      console.log("URL RECEIVED:");
-      console.log(url);
+        req.files?.pdfFile?.[0];
 
       const imageFile =
-  req.files?.imageFile?.[0];
-
-
-
-      // DOWNLOAD HTML
+        req.files?.imageFile?.[0];
 
       let text = "";
 
-// URL MODE
 
-if (url) {
 
-  const response =
-    await axios.get(url);
+      // URL MODE
 
-  const html =
-    response.data;
+      if (url) {
 
-  console.log("HTML DOWNLOADED");
+        console.log("URL RECEIVED");
 
-  const $ =
-    cheerio.load(html);
+        const response =
+          await axios.get(url);
 
-  text =
-    $("body").text();
+        const html =
+          response.data;
 
-}
+        const $ =
+          cheerio.load(html);
 
-  ///Analizar Imagen///
+        text =
+          $("body").text();
 
-else if (imageFile) {
+      }
 
-  console.log("IMAGE RECEIVED");
 
-  const imageBuffer =
-    fs.readFileSync(imageFile.path);
 
-  const base64Image =
-    imageBuffer.toString("base64");
+      // IMAGE MODE
 
-  const mimeType =
-    mime.lookup(imageFile.originalname)
-    || "image/jpeg";
+      else if (imageFile) {
 
-  console.log("SENDING IMAGE TO OPENAI");
+        console.log("IMAGE RECEIVED");
 
-  const completion =
-    await openai.chat.completions.create({
+        const imageBuffer =
+          fs.readFileSync(imageFile.path);
 
-      model: "gpt-4.1-mini",
+        const base64Image =
+          imageBuffer.toString("base64");
 
-      messages: [
+        const mimeType =
+          mime.lookup(imageFile.originalname)
+          || "image/jpeg";
 
-        {
-          role: "system",
+        const completion =
+          await openai.chat.completions.create({
 
-          content: `
+            model: "gpt-4.1-mini",
+
+            messages: [
+
+              {
+                role: "system",
+
+                content: `
 You are a restaurant menu parser.
 
 Extract restaurant menu items into JSON.
@@ -138,107 +132,104 @@ Structure:
   ]
 }
 `
-        },
+              },
 
-        {
-          role: "user",
+              {
+                role: "user",
 
-          content: [
+                content: [
 
-            {
-              type: "text",
+                  {
+                    type: "text",
 
-              text:
+                    text:
 "Extract this restaurant menu"
-            },
+                  },
 
-            {
-              type: "image_url",
+                  {
+                    type: "image_url",
 
-              image_url: {
+                    image_url: {
 
-                url:
+                      url:
 `data:${mimeType};base64,${base64Image}`
+
+                    }
+
+                  }
+
+                ]
 
               }
 
-            }
+            ]
 
-          ]
+          });
 
-        }
+        const parsedMenu =
+          completion.choices[0].message.content;
 
-      ]
+        return res.json({
 
-    });
+          success: true,
 
-  const parsedMenu =
-    completion.choices[0].message.content;
+          parsedMenu: parsedMenu
 
-  return res.json({
+        });
 
-    success: true,
-
-    parsedMenu: parsedMenu
-
-  });
-
-}
-
-// PDF MODE
-
-else if (pdfFile) {
-
-  console.log("PDF RECEIVED");
-
-  const pdfBuffer =
-    fs.readFileSync(pdfFile.path);
-
-  const pdfData =
-    await pdf(pdfBuffer);
-
-  text =
-    pdfData.text;
-
-}
-
-else {
-
-  return res.json({
-
-    success: false,
-
-    error: "No URL or PDF received"
-
-  });
-
-}
+      }
 
 
-      // EXTRACT TEXT
 
-     
-      console.log("TEXT EXTRACTED");
+      // PDF MODE
 
-     // LIMIT TEXT
+      else if (pdfFile) {
 
-const menuText =
-  text.substring(0, 40000);
+        console.log("PDF RECEIVED");
 
-console.log("SENDING TO OPENAI");
+        const pdfBuffer =
+          fs.readFileSync(pdfFile.path);
 
-// OPENAI
+        const pdfData =
+          await pdf(pdfBuffer);
 
-const completion =
-  await openai.chat.completions.create({
+        text =
+          pdfData.text;
 
-    model: "gpt-4.1-mini",
+      }
 
-    messages: [
 
-      {
-        role: "system",
-        content: `
+
+      else {
+
+        return res.json({
+
+          success: false,
+
+          error: "No URL, image or PDF received"
+
+        });
+
+      }
+
+
+
+      // TEXT TO OPENAI
+
+      const menuText =
+        text.substring(0, 40000);
+
+      const completion =
+        await openai.chat.completions.create({
+
+          model: "gpt-4.1-mini",
+
+          messages: [
+
+            {
+              role: "system",
+
+              content: `
 You are a restaurant menu parser.
 
 Extract restaurant menu items into JSON.
@@ -253,29 +244,53 @@ Structure:
       "category": "",
       "name": "",
       "description": "",
-      "price": "",
-      "image_url": ""
+      "price": ""
     }
   ]
 }
 `
-      },
+            },
 
-      {
-        role: "user",
-        content: menuText
-      }
+            {
+              role: "user",
 
-    ]
+              content: menuText
+            }
 
-  });
+          ]
 
-console.log("OPENAI RESPONSE RECEIVED");
+        });
 
-const parsedMenu =
-  completion.choices[0].message.content;
+      const parsedMenu =
+        completion.choices[0].message.content;
 
-      
+      return res.json({
+
+        success: true,
+
+        parsedMenu: parsedMenu
+
+      });
+
+    } catch (error) {
+
+      console.log(error);
+
+      return res.json({
+
+        success: false,
+
+        error: error.message
+
+      });
+
+    }
+
+  }
+
+);
+
+
 // DISH INFO
 
 app.post("/dish-info", async (req, res) => {
@@ -288,10 +303,6 @@ app.post("/dish-info", async (req, res) => {
     const restaurant =
       req.body.restaurant;
 
-    console.log("DISH INFO REQUEST");
-
-    console.log(dishName);
-
     const completion =
       await openai.chat.completions.create({
 
@@ -301,6 +312,7 @@ app.post("/dish-info", async (req, res) => {
 
           {
             role: "system",
+
             content: `
 Eres un asistente gastronómico experto.
 
@@ -308,33 +320,26 @@ Responde SIEMPRE en español castellano.
 
 Explica los platos de manera cercana, profesional y cultural.
 
-Analiza tambien que tipo de restaurante es viendo todos los platos de su carta en el enlace original de la request.
+Incluye:
 
-Da descripcion basada no solo en el plato si no tambien incluyendo el tipo de restaurante que es por ejemplo, 
-no es lo mismo una ensalada mixta Italiana, que en un restaurante Español
-
-En el texto devuelto Incluye:
-
-- descripción del plato
-- ingredientes típicos
-- origen o historia
+- descripción
+- ingredientes
+- historia
 - curiosidades gastronómicas
-- relación cultural con la ciudad o región si aplica
 
-La respuesta debe ser agradable de leer y orientada a clientes de restaurantes.
+La respuesta debe ser agradable de leer.
 `
           },
 
           {
             role: "user",
+
             content: `
 Plato:
 ${dishName}
 
 Restaurante:
 ${restaurant}
-
-
 `
           }
 
@@ -368,6 +373,7 @@ ${restaurant}
   }
 
 });
+
 
 // SERVER
 
