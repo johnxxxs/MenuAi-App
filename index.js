@@ -318,6 +318,8 @@ Eres un asistente gastronómico experto.
 
 Responde SIEMPRE en español castellano.
 
+Ten en cuenta la categoría donde esta el plato por ejemplo: Categoría: "Bocadillos", plato: Lomo con queso, plato igual a= Bocadillo de lomo con queso y NO: solo Lomo con queso 
+
 Explica los platos de manera cercana, profesional y cultural.
 
 Incluye:
