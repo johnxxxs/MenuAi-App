@@ -302,6 +302,9 @@ app.post("/dish-info", async (req, res) => {
 
     const restaurant =
       req.body.restaurant;
+    
+    const category =
+  req.body.category;
 
     const completion =
       await openai.chat.completions.create({
@@ -336,6 +339,9 @@ La respuesta debe ser agradable de leer.
             role: "user",
 
             content: `
+Categoría:
+${category}
+
 Plato:
 ${dishName}
 
