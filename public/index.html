@@ -338,7 +338,11 @@ async function extractMenu() {
         </div>
 
         <button
-          onclick="getDishInfo('${item.name}', this)"
+         onclick="getDishInfo(
+  '${item.name}',
+  '${item.category}',
+  this
+)"
         >
 
           ✨ More Info
@@ -358,7 +362,12 @@ async function extractMenu() {
 }
 
 
-async function getDishInfo(dishName, button) {
+async function getDishInfo(
+  dishName,
+  category,
+  button
+)
+{
 
   const infoBox =
     button.parentElement.querySelector(".dish-info");
@@ -383,6 +392,7 @@ async function getDishInfo(dishName, button) {
         body: JSON.stringify({
 
           dishName: dishName,
+          category: category,
 
           restaurant: "Restaurant"
 
