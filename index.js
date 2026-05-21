@@ -220,51 +220,62 @@ else {
      
       console.log("TEXT EXTRACTED");
 
-      // LIMIT TEXT
+     // LIMIT TEXT
 
-      const menuText =
-        text.substring(0, 40000);
+const menuText =
+  text.substring(0, 40000);
 
-      console.log("SENDING TO OPENAI");
+console.log("SENDING TO OPENAI");
 
-      // OPENAI
+// OPENAI
 
+const completion =
+  await openai.chat.completions.create({
+
+    model: "gpt-4.1-mini",
+
+    messages: [
+
+      {
+        role: "system",
+        content: `
+You are a restaurant menu parser.
+
+Extract restaurant menu items into JSON.
+
+Return ONLY JSON.
+
+Structure:
+
+{
+  "items": [
+    {
+      "category": "",
+      "name": "",
+      "description": "",
+      "price": "",
+      "image_url": ""
+    }
+  ]
+}
+`
+      },
+
+      {
+        role: "user",
+        content: menuText
+      }
+
+    ]
+
+  });
+
+console.log("OPENAI RESPONSE RECEIVED");
 
 const parsedMenu =
-  response.output_text;
+  completion.choices[0].message.content;
 
-      console.log("OPENAI RESPONSE RECEIVED");
-
-      const parsedMenu =
-        completion.choices[0].message.content;
-
-      // RESPONSE
-
-      return res.json({
-
-        success: true,
-
-        parsedMenu: parsedMenu
-
-      });
-
-    } catch (error) {
-
-      console.log("ERROR:");
-      console.log(error);
-
-      return res.json({
-
-        success: false,
-
-        error: error.message
-
-      });
-
-    }
-
-  }
-);
+      
 // DISH INFO
 
 app.post("/dish-info", async (req, res) => {
