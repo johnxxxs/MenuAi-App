@@ -92,7 +92,7 @@ if (url) {
 
   ///Analizar Imagen///
 
-  else if (imageFile) {
+else if (imageFile) {
 
   console.log("IMAGE RECEIVED");
 
@@ -102,9 +102,9 @@ if (url) {
   const base64Image =
     imageBuffer.toString("base64");
 
-const mimeType =
-  mime.lookup(imageFile.originalname)
-  || "image/jpeg";
+  const mimeType =
+    mime.lookup(imageFile.originalname)
+    || "image/jpeg";
 
   console.log("SENDING IMAGE TO OPENAI");
 
@@ -117,6 +117,7 @@ const mimeType =
 
         {
           role: "system",
+
           content: `
 You are a restaurant menu parser.
 
@@ -132,8 +133,7 @@ Structure:
       "category": "",
       "name": "",
       "description": "",
-      "price": "",
-      "image_url": ""
+      "price": ""
     }
   ]
 }
@@ -142,11 +142,14 @@ Structure:
 
         {
           role: "user",
+
           content: [
 
             {
               type: "text",
-              text: "Extract this restaurant menu"
+
+              text:
+"Extract this restaurant menu"
             },
 
             {
