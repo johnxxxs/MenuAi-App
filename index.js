@@ -226,19 +226,23 @@ else {
 
       // OPENAI
 
-      const completion =
-        await openai.chat.completions.create({
+const response =
+  await openai.responses.create({
 
-          model: "gpt-4.1-mini",
+    model: "gpt-4.1-mini",
 
-          messages: [
+    input: [
 
-            {
-              role: "system",
-              content: `
-You are a restaurant menu parser.
+      {
+        role: "user",
 
-Extract restaurant menu items into JSON.
+        content: [
+
+          {
+            type: "input_text",
+
+            text:
+`Extract restaurant menu items into JSON.
 
 Return ONLY JSON.
 
@@ -254,18 +258,26 @@ Structure:
       "image_url": ""
     }
   ]
-}
-`
-            },
+}`
+          },
 
-            {
-              role: "user",
-              content: menuText
-            }
+          {
+            type: "input_image",
 
-          ]
+            image_url:
+`data:${mimeType};base64,${base64Image}`
+          }
 
-        });
+        ]
+
+      }
+
+    ]
+
+  });
+
+const parsedMenu =
+  response.output_text;
 
       console.log("OPENAI RESPONSE RECEIVED");
 
