@@ -229,55 +229,6 @@ else {
 
       // OPENAI
 
-const response =
-  await openai.responses.create({
-
-    model: "gpt-4.1-mini",
-
-    input: [
-
-      {
-        role: "user",
-
-        content: [
-
-          {
-            type: "input_text",
-
-            text:
-`Extract restaurant menu items into JSON.
-
-Return ONLY JSON.
-
-Structure:
-
-{
-  "items": [
-    {
-      "category": "",
-      "name": "",
-      "description": "",
-      "price": "",
-      "image_url": ""
-    }
-  ]
-}`
-          },
-
-          {
-            type: "input_image",
-
-            image_url:
-`data:${mimeType};base64,${base64Image}`
-          }
-
-        ]
-
-      }
-
-    ]
-
-  });
 
 const parsedMenu =
   response.output_text;
