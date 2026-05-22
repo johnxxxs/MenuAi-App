@@ -217,7 +217,7 @@ Structure:
       // TEXT TO OPENAI
 
       const menuText =
-        text.substring(0, 40000);
+        text.substring(0, 15000);
 
       const completion =
         await openai.chat.completions.create({
