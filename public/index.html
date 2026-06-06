@@ -333,8 +333,10 @@ async function extractMenu() {
 
   formData.append("url", url);
 
-  const imageFile =
-    document.getElementById("imageFile").files[0];
+const imageFile =
+  document.getElementById("imageFile").files[0]
+  ||
+  document.getElementById("cameraFile").files[0];
 
   const pdfFile =
   document.getElementById("pdfFile").files[0];
