@@ -243,6 +243,12 @@
   style="display:none;"
 />
 
+  <hr>
+
+<h3>
+⭐ Funciones avanzadas
+</h3>
+
   <input
     type="text"
     id="url"
@@ -271,10 +277,43 @@
   </button>
 
   <div id="result"></div>
+  
 
 </div>
 
+  
+
 <script>
+
+  function openCamera() {
+
+  document
+    .getElementById("cameraFile")
+    .click();
+
+    if (
+
+ !/Android|iPhone|iPad|iPod/i.test(
+   navigator.userAgent
+ )
+
+) {
+
+ const button =
+   document.getElementById(
+     "cameraButton"
+   );
+
+ if (button) {
+
+   button.style.display =
+     "none";
+
+ }
+
+}
+
+}
 
 let currentMenu = [];
 
