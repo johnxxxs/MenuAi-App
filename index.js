@@ -1,7 +1,6 @@
 require("dotenv").config();
 
 const fs = require("fs");
-const pdf = require("pdf-parse");
 console.log(pdf);
 const express = require("express");
 const path = require("path");
