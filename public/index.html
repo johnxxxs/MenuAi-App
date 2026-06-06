@@ -235,6 +235,12 @@
     capture="environment"
   />
 
+  <input
+  type="file"
+  id="pdfFile"
+  accept=".pdf"
+/>
+
   <button onclick="extractMenu()">
     📸 Digitaliza ahora
   </button>
@@ -267,12 +273,24 @@ async function extractMenu() {
   const imageFile =
     document.getElementById("imageFile").files[0];
 
+  const pdfFile =
+  document.getElementById("pdfFile").files[0];
+
   if (imageFile) {
 
     formData.append(
       "imageFile",
       imageFile
     );
+
+    if (pdfFile) {
+
+  formData.append(
+    "pdfFile",
+    pdfFile
+  );
+
+}
 
   }
 
