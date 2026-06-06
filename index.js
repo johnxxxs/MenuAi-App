@@ -1,6 +1,7 @@
 require("dotenv").config();
-const { fromPath } = require("pdf2pic");
+
 const fs = require("fs");
+const pdf = require("pdf-parse").default;
 const express = require("express");
 const path = require("path");
 const multer = require("multer");
@@ -182,112 +183,34 @@ Structure:
 
       // PDF MODE
 
-    else if (pdfFile) {
+      else if (pdfFile) {
 
-  console.log("PDF RECEIVED");
+        console.log("PDF RECEIVED");
 
-  const convert =
-    fromPath(pdfFile.path, {
+        const pdfBuffer =
+          fs.readFileSync(pdfFile.path);
 
-      density: 200,
+        const pdfData =
+          await pdf(pdfBuffer);
 
-      saveFilename: "menu",
+        text =
+          pdfData.text;
 
-      savePath: "./uploads",
+      }
 
-      format: "jpg",
 
-      width: 2000,
 
-      height: 2000
+      else {
 
-    });
+        return res.json({
 
-  const page =
-    await convert(1);
+          success: false,
 
-  const imageBuffer =
-    fs.readFileSync(page.path);
+          error: "No URL, image or PDF received"
 
-  const base64Image =
-    imageBuffer.toString("base64");
+        });
 
-  const completion =
-    await openai.chat.completions.create({
-
-      model: "gpt-4.1-mini",
-
-      messages: [
-
-        {
-          role: "system",
-
-          content: `
-You are a restaurant menu parser.
-
-Extract restaurant menu items into JSON.
-
-Return ONLY JSON.
-
-Structure:
-
-{
-  "items": [
-    {
-      "category": "",
-      "name": "",
-      "description": "",
-      "price": ""
-    }
-  ]
-}
-`
-        },
-
-        {
-          role: "user",
-
-          content: [
-
-            {
-              type: "text",
-
-              text:
-                "Extract this restaurant menu"
-            },
-
-            {
-              type: "image_url",
-
-              image_url: {
-
-                url:
-`data:image/jpeg;base64,${base64Image}`
-
-              }
-
-            }
-
-          ]
-
-        }
-
-      ]
-
-    });
-
-  const parsedMenu =
-    completion.choices[0].message.content;
-
-  return res.json({
-
-    success: true,
-
-    parsedMenu: parsedMenu
-
-  });
-
-}
+      }
 
 
 
