@@ -241,6 +241,7 @@
   accept="image/*"
   capture="environment"
   style="display:none;"
+  onchange="extractMenu()"
 />
 
   
@@ -262,7 +263,7 @@
   id="imageFile"
   accept="image/*"
 />
-  />
+
 
   <input
   type="file"
@@ -320,6 +321,9 @@
 let currentMenu = [];
 
 async function extractMenu() {
+
+  alert("extractMenu ejecutado");
+
 
   document.getElementById("result").innerHTML =
     "🤖 Loading menu...";
@@ -557,6 +561,26 @@ function exportCSV() {
   a.download = "menu.csv";
 
   a.click();
+
+}
+
+if (
+  !/Android|iPhone|iPad|iPod/i.test(
+    navigator.userAgent
+  )
+) {
+
+  const button =
+    document.getElementById(
+      "cameraButton"
+    );
+
+  if (button) {
+
+    button.style.display =
+      "none";
+
+  }
 
 }
 
