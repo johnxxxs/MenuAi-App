@@ -276,14 +276,16 @@ async function extractMenu() {
   const pdfFile =
   document.getElementById("pdfFile").files[0];
 
-  if (imageFile) {
+ if (imageFile) {
 
-    formData.append(
-      "imageFile",
-      imageFile
-    );
+  formData.append(
+    "imageFile",
+    imageFile
+  );
 
-    if (pdfFile) {
+}
+
+if (pdfFile) {
 
   formData.append(
     "pdfFile",
@@ -291,8 +293,6 @@ async function extractMenu() {
   );
 
 }
-
-  }
 
   const response =
     await fetch("/process", {
