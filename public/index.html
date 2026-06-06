@@ -218,39 +218,9 @@
 
   <h1>MenuAi App</h1>
 
-<h2>
-  Digitaliza cualquier carta en segundos
-</h2>
-
-<p>
-  Haz una foto, sube una imagen o importa cartas desde URL y PDF.
-</p>
-
-
-
-  <button
-  id="cameraButton"
-  onclick="openCamera()"
->
-📸 Hacer Foto Menú
-</button>
-
-<input
-  type="file"
-  id="cameraFile"
-  accept="image/*"
-  capture="environment"
-  style="display:none;"
-  onchange="extractMenu()"
-/>
-
-  
-<h3>
-⭐ Funciones avanzadas
-</h3>
-
-
-  <hr>
+  <p>
+    Digitaliza cartas y menús de restaurantes al Instante con IA
+  </p>
 
   <input
     type="text"
@@ -259,11 +229,11 @@
   />
 
   <input
-  type="file"
-  id="imageFile"
-  accept="image/*"
-/>
-
+    type="file"
+    id="imageFile"
+    accept="image/*"
+    capture="environment"
+  />
 
   <input
   type="file"
@@ -280,50 +250,14 @@
   </button>
 
   <div id="result"></div>
-  
 
 </div>
 
-  
-
 <script>
-
-  function openCamera() {
-
-  document
-    .getElementById("cameraFile")
-    .click();
-
-    if (
-
- !/Android|iPhone|iPad|iPod/i.test(
-   navigator.userAgent
- )
-
-) {
-
- const button =
-   document.getElementById(
-     "cameraButton"
-   );
-
- if (button) {
-
-   button.style.display =
-     "none";
-
- }
-
-}
-
-}
 
 let currentMenu = [];
 
 async function extractMenu() {
-
-  alert("extractMenu ejecutado");
-
 
   document.getElementById("result").innerHTML =
     "🤖 Loading menu...";
@@ -336,10 +270,8 @@ async function extractMenu() {
 
   formData.append("url", url);
 
-const imageFile =
-  document.getElementById("imageFile").files[0]
-  ||
-  document.getElementById("cameraFile").files[0];
+  const imageFile =
+    document.getElementById("imageFile").files[0];
 
   const pdfFile =
   document.getElementById("pdfFile").files[0];
@@ -561,26 +493,6 @@ function exportCSV() {
   a.download = "menu.csv";
 
   a.click();
-
-}
-
-if (
-  !/Android|iPhone|iPad|iPod/i.test(
-    navigator.userAgent
-  )
-) {
-
-  const button =
-    document.getElementById(
-      "cameraButton"
-    );
-
-  if (button) {
-
-    button.style.display =
-      "none";
-
-  }
 
 }
 
