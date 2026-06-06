@@ -317,8 +317,21 @@ if (pdfFile) {
 
   }
 
-  const menu =
+  let menu;
+
+try {
+
+  menu =
     JSON.parse(data.parsedMenu);
+
+} catch (error) {
+
+  document.getElementById("result").innerHTML =
+    "Error interpretando JSON generado por IA";
+
+  return;
+
+}
 
   const items =
     menu.items;
@@ -349,10 +362,10 @@ if (pdfFile) {
 
         <h3>${item.name}</h3>
 
-        <p>${item.description}</p>
+       <p>${item.description || ""}</p>
 
         <div class="price">
-          ${item.price}
+          ${item.price || ""}
         </div>
 
         <button
@@ -458,7 +471,7 @@ function exportCSV() {
 
   currentMenu.forEach(item => {
 
-    csv += `"${item.name}","${item.description}","${item.price}","${item.category}"\n`;
+   csv += `"${item.name || ""}","${item.description || ""}","${item.price || ""}","${item.category || ""}"\n`;
 
   });
 
