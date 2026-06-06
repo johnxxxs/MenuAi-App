@@ -1,5 +1,5 @@
 require("dotenv").config();
-
+const { fromPath } = require("pdf2pic");
 const fs = require("fs");
 const express = require("express");
 const path = require("path");
@@ -182,32 +182,112 @@ Structure:
 
       // PDF MODE
 
-     else if (pdfFile) {
+    else if (pdfFile) {
+
+  console.log("PDF RECEIVED");
+
+  const convert =
+    fromPath(pdfFile.path, {
+
+      density: 200,
+
+      saveFilename: "menu",
+
+      savePath: "./uploads",
+
+      format: "jpg",
+
+      width: 2000,
+
+      height: 2000
+
+    });
+
+  const page =
+    await convert(1);
+
+  const imageBuffer =
+    fs.readFileSync(page.path);
+
+  const base64Image =
+    imageBuffer.toString("base64");
+
+  const completion =
+    await openai.chat.completions.create({
+
+      model: "gpt-4.1-mini",
+
+      messages: [
+
+        {
+          role: "system",
+
+          content: `
+You are a restaurant menu parser.
+
+Extract restaurant menu items into JSON.
+
+Return ONLY JSON.
+
+Structure:
+
+{
+  "items": [
+    {
+      "category": "",
+      "name": "",
+      "description": "",
+      "price": ""
+    }
+  ]
+}
+`
+        },
+
+        {
+          role: "user",
+
+          content: [
+
+            {
+              type: "text",
+
+              text:
+                "Extract this restaurant menu"
+            },
+
+            {
+              type: "image_url",
+
+              image_url: {
+
+                url:
+`data:image/jpeg;base64,${base64Image}`
+
+              }
+
+            }
+
+          ]
+
+        }
+
+      ]
+
+    });
+
+  const parsedMenu =
+    completion.choices[0].message.content;
 
   return res.json({
 
-    success: false,
+    success: true,
 
-    error:
-      "PDF mode under maintenance"
+    parsedMenu: parsedMenu
 
   });
 
 }
-
-
-
-      else {
-
-        return res.json({
-
-          success: false,
-
-          error: "No URL, image or PDF received"
-
-        });
-
-      }
 
 
 
