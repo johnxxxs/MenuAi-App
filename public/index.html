@@ -218,9 +218,30 @@
 
   <h1>MenuAi App</h1>
 
-  <p>
-    Digitaliza cartas y menús de restaurantes al Instante con IA
-  </p>
+<h2>
+  Digitaliza cualquier carta en segundos
+</h2>
+
+<p>
+  Haz una foto, sube una imagen o importa cartas desde URL y PDF.
+</p>
+
+  <h3>📸 Digitalización rápida</h3>
+
+  <button
+  id="cameraButton"
+  onclick="openCamera()"
+>
+📸 Hacer Foto Menú
+</button>
+
+<input
+  type="file"
+  id="cameraFile"
+  accept="image/*"
+  capture="environment"
+  style="display:none;"
+/>
 
   <input
     type="text"
@@ -229,10 +250,10 @@
   />
 
   <input
-    type="file"
-    id="imageFile"
-    accept="image/*"
-    capture="environment"
+  type="file"
+  id="imageFile"
+  accept="image/*"
+/>
   />
 
   <input
