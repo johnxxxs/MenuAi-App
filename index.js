@@ -1,7 +1,6 @@
 require("dotenv").config();
 
 const fs = require("fs");
-console.log(pdf);
 const express = require("express");
 const path = require("path");
 const multer = require("multer");
@@ -183,20 +182,18 @@ Structure:
 
       // PDF MODE
 
-      else if (pdfFile) {
+     else if (pdfFile) {
 
-        console.log("PDF RECEIVED");
+  return res.json({
 
-        const pdfBuffer =
-          fs.readFileSync(pdfFile.path);
+    success: false,
 
-        const pdfData =
-          await pdf(pdfBuffer);
+    error:
+      "PDF mode under maintenance"
 
-        text =
-          pdfData.text;
+  });
 
-      }
+}
 
 
 
