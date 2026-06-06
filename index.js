@@ -168,6 +168,8 @@ Structure:
 
         const parsedMenu =
           completion.choices[0].message.content;
+        console.log("OPENAI RESPONSE:");
+console.log(parsedMenu);
 
         return res.json({
 
@@ -263,6 +265,9 @@ Structure:
 
       const parsedMenu =
         completion.choices[0].message.content;
+
+      console.log("OPENAI RESPONSE:");
+console.log(parsedMenu);
 
       return res.json({
 
