@@ -317,8 +317,23 @@ async function extractMenu() {
 
   }
 
-  const menu =
+  let menu;
+
+try {
+
+  menu =
     JSON.parse(data.parsedMenu);
+
+} catch (error) {
+
+  console.log(data.parsedMenu);
+
+  document.getElementById("result").innerHTML =
+    "Error interpretando JSON generado por IA";
+
+  return;
+
+}
 
   const items =
     menu.items;
