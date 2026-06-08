@@ -168,8 +168,6 @@ Structure:
 
         const parsedMenu =
           completion.choices[0].message.content;
-        console.log("OPENAI RESPONSE:");
-console.log(parsedMenu);
 
         return res.json({
 
@@ -219,7 +217,7 @@ console.log(parsedMenu);
       // TEXT TO OPENAI
 
       const menuText =
-  text.substring(0, 15000);
+        text.substring(0, 40000);
 
       const completion =
         await openai.chat.completions.create({
@@ -265,9 +263,6 @@ Structure:
 
       const parsedMenu =
         completion.choices[0].message.content;
-
-      console.log("OPENAI RESPONSE:");
-console.log(parsedMenu);
 
       return res.json({
 
