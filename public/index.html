@@ -436,11 +436,13 @@ function exportCSV() {
   }
 
   let csv =
-    "Name,Description,Price,Category\n";
+  "Categoria,Plato,Descripcion,Precio\n";
 
   currentMenu.forEach(item => {
 
-    csv += `"${item.name}","${item.description}","${item.price}","${item.category}"\n`;
+  csv += `"${item.category || ""}","${item.name || ""}","${item.description || ""}","${item.price || ""}"\n`;
+
+});
 
   });
 
