@@ -380,6 +380,47 @@ ${restaurant}
 
 });
 
+// ================================
+// TRANSLATE MENU
+// ================================
+
+app.post("/translate", async (req, res) => {
+
+  try {
+
+    const language =
+      req.body.language;
+
+    const menu =
+      req.body.menu;
+
+    console.log("==============");
+    console.log("TRANSLATE");
+    console.log(language);
+
+    return res.json({
+
+      success: true,
+
+      language: language,
+
+      menu: menu
+
+    });
+
+  } catch (error) {
+
+    return res.json({
+
+      success: false,
+
+      error: error.message
+
+    });
+
+  }
+
+});
 
 // SERVER
 
