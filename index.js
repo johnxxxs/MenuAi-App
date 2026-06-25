@@ -388,88 +388,25 @@ app.post("/translate", async (req, res) => {
 
   try {
 
-    const language = req.body.language;
+    const language =
+      req.body.language;
 
-    const menu = req.body.menu;
+    const menu =
+      req.body.menu;
 
-    let targetLanguage = "Spanish";
-
-    if (language === "en")
-      targetLanguage = "English";
-
-    if (language === "fr")
-      targetLanguage = "French";
-
-    if (language === "it")
-      targetLanguage = "Italian";
-
-    const completion =
-      await openai.chat.completions.create({
-
-        model: "gpt-4.1-mini",
-
-        messages: [
-
-          {
-
-            role: "system",
-
-            content: `
-You are a professional restaurant menu translator.
-
-Translate ONLY:
-
-- category
-- name
-- description
-
-NEVER translate prices.
-
-Return ONLY valid JSON.
-
-Keep exactly the same structure.
-`
-
-          },
-
-          {
-
-            role: "user",
-
-            content: `
-Translate this menu to ${targetLanguage}
-
-${JSON.stringify(menu)}
-`
-
-          }
-
-        ]
-
-      });
+    console.log("==============");
+    console.log("TRANSLATE");
+    console.log(language);
 
     return res.json({
 
       success: true,
 
-      menu:
-        completion.choices[0].message.content
+      language: language,
+
+      menu: menu
 
     });
-
-  } catch (error) {
-
-    return res.json({
-
-      success: false,
-
-      error: error.message
-
-    });
-
-  }
-
-});
 
   } catch (error) {
 
