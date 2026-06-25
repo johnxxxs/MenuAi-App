@@ -228,12 +228,42 @@
     placeholder="Pegar URL carta digital o Web"
   />
 
+  <div id="mobileButtons" style="display:none;">
+
+  <button type="button" onclick="openCamera()">
+    📷 Hacer foto
+  </button>
+
+  <button type="button" onclick="openGallery()">
+    🖼 Elegir de galería
+  </button>
+
+</div>
+
+<div id="desktopButton">
+
   <input
     type="file"
     id="imageFile"
     accept="image/*"
-    capture="environment"
   />
+
+</div>
+
+<input
+  type="file"
+  id="cameraInput"
+  accept="image/*"
+  capture="environment"
+  style="display:none"
+/>
+
+<input
+  type="file"
+  id="galleryInput"
+  accept="image/*"
+  style="display:none"
+/>
 
   <button onclick="extractMenu()">
     📸 Digitaliza ahora
@@ -248,6 +278,22 @@
 </div>
 
 <script>
+
+  function openCamera() {
+
+  document
+    .getElementById("cameraInput")
+    .click();
+
+}
+
+function openGallery() {
+
+  document
+    .getElementById("galleryInput")
+    .click();
+
+}
 
 let currentMenu = [];
 
@@ -264,8 +310,17 @@ async function extractMenu() {
 
   formData.append("url", url);
 
-  const imageFile =
-    document.getElementById("imageFile").files[0];
+const imageFile =
+
+  document.getElementById("imageFile").files[0]
+
+  ||
+
+  document.getElementById("cameraInput").files[0]
+
+  ||
+
+  document.getElementById("galleryInput").files[0];
 
   if (imageFile) {
 
@@ -463,6 +518,24 @@ function exportCSV() {
   a.download = "menu.csv";
 
   a.click();
+
+}
+
+const isMobile =
+
+/Android|iPhone|iPad|iPod/i.test(
+  navigator.userAgent
+);
+
+if (isMobile) {
+
+  document.getElementById(
+    "mobileButtons"
+  ).style.display = "block";
+
+  document.getElementById(
+    "desktopButton"
+  ).style.display = "none";
 
 }
 
