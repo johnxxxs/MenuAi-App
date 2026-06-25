@@ -239,6 +239,32 @@
     📸 Digitaliza ahora
   </button>
 
+  <hr>
+
+<h3>
+🌍 Idioma
+</h3>
+
+<div id="languageButtons">
+
+  <button onclick="changeLanguage('es')">
+    🇪🇸 Español
+  </button>
+
+  <button onclick="changeLanguage('en')">
+    🇬🇧 English
+  </button>
+
+  <button onclick="changeLanguage('fr')">
+    🇫🇷 Français
+  </button>
+
+  <button onclick="changeLanguage('it')">
+    🇮🇹 Italiano
+  </button>
+
+</div>
+
   <button onclick="exportCSV()">
     Exportar CSV
   </button>
@@ -250,6 +276,8 @@
 <script>
 
 let currentMenu = [];
+
+let currentLanguage = "es";
 
 async function extractMenu() {
 
@@ -463,6 +491,17 @@ function exportCSV() {
   a.download = "menu.csv";
 
   a.click();
+
+}
+
+  async function changeLanguage(language) {
+
+  currentLanguage = language;
+
+  console.log(
+    "Idioma seleccionado:",
+    language
+  );
 
 }
 
