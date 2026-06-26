@@ -3,278 +3,320 @@
 
 <head>
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
 
-  <title>MenuAi App</title>
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+/>
 
-  <style>
+<title>MenuAi App</title>
 
-    body {
+<style>
 
-      font-family: Arial;
-      background: #f2f2f2;
-      padding: 15px;
-      margin: 0;
+body{
 
-    }
+    font-family:Arial,sans-serif;
+    background:#f2f2f2;
+    padding:15px;
+    margin:0;
 
-    .container {
+}
 
-      max-width: 1000px;
-      margin: auto;
-      background: white;
-      padding: 20px;
-      border-radius: 20px;
+.container{
 
-    }
+    max-width:1000px;
+    margin:auto;
+    background:white;
+    padding:20px;
+    border-radius:20px;
 
-    h1 {
+}
 
-      font-size: 52px;
-      margin-bottom: 10px;
+h1{
 
-    }
+    font-size:52px;
+    margin-bottom:10px;
+    text-align:center;
 
-    p {
+}
 
-      font-size: 20px;
-      color: #555;
+p{
 
-    }
+    font-size:20px;
+    color:#555;
+    text-align:center;
 
-    input {
+}
 
-      width: 100%;
-      padding: 18px;
-      font-size: 18px;
-      margin-bottom: 20px;
-      box-sizing: border-box;
-      border-radius: 12px;
-      border: 1px solid #ccc;
+input{
 
-    }
+    width:100%;
+    padding:18px;
+    font-size:18px;
+    margin-bottom:20px;
+    box-sizing:border-box;
+    border-radius:12px;
+    border:1px solid #ccc;
 
-    button {
+}
 
-      width: 100%;
-      padding: 18px;
-      font-size: 18px;
-      cursor: pointer;
-      margin-top: 10px;
-      border-radius: 12px;
-      border: none;
-      background: black;
-      color: white;
+button{
 
-    }
+    width:100%;
+    padding:18px;
+    font-size:18px;
+    cursor:pointer;
+    margin-top:10px;
+    border-radius:12px;
+    border:none;
+    background:black;
+    color:white;
 
-    button:hover {
+}
 
-      opacity: 0.9;
+button:hover{
 
-    }
+    opacity:.9;
 
-    .category {
+}
 
-      margin-top: 40px;
+.category{
 
-    }
+    margin-top:40px;
 
-    .category h2 {
+}
 
-      font-size: 34px;
-      border-bottom: 2px solid #eee;
-      padding-bottom: 10px;
+.category h2{
 
-    }
+    font-size:34px;
+    border-bottom:2px solid #eee;
+    padding-bottom:10px;
 
-    .item {
+}
 
-      background: #f7f7f7;
-      padding: 20px;
-      border-radius: 16px;
-      margin-top: 15px;
+.item{
 
-    }
+    background:#f7f7f7;
+    padding:20px;
+    border-radius:16px;
+    margin-top:15px;
 
-    .item h3 {
+}
 
-      font-size: 28px;
-      margin-bottom: 10px;
+.item h3{
 
-    }
+    font-size:28px;
+    margin-bottom:10px;
 
-    .item p {
+}
 
-      font-size: 18px;
-      line-height: 1.5;
+.item p{
 
-    }
+    font-size:18px;
+    line-height:1.5;
+    text-align:left;
 
-    .price {
+}
 
-      font-weight: bold;
-      margin-top: 10px;
-      font-size: 22px;
+.price{
 
-    }
+    font-weight:bold;
+    margin-top:10px;
+    font-size:22px;
 
-    .dish-info {
+}
 
-      margin-top: 20px;
-      padding: 20px;
-      background: #f0f0f0;
-      border-radius: 12px;
-      white-space: pre-line;
-      line-height: 1.7;
-      display: none;
-      font-size: 18px;
+/* Banderas */
 
-    }
+.language-bar{
 
-    /* MOBILE */
+    text-align:center;
+    margin:15px 0;
 
-    @media (max-width: 768px) {
+}
 
-      body {
+.language-bar button{
 
-        padding: 10px;
+    width:60px;
+    display:inline-block;
+    margin:5px;
 
-      }
+}
 
-      .container {
+/* More Info */
 
-        padding: 15px;
-        border-radius: 14px;
+.dish-info{
 
-      }
+    margin-top:20px;
+    padding:20px;
+    background:#f0f0f0;
+    border-radius:12px;
+    white-space:pre-line;
+    line-height:1.7;
+    display:none;
+    font-size:18px;
 
-      h1 {
+}
 
-        font-size: 42px;
+/* MOBILE */
 
-      }
+@media(max-width:768px){
 
-      p {
+body{
 
-        font-size: 17px;
+    padding:10px;
 
-      }
+}
 
-      input {
+.container{
 
-        font-size: 17px;
-        padding: 16px;
+    padding:15px;
+    border-radius:14px;
 
-      }
+}
 
-      button {
+h1{
 
-        font-size: 17px;
-        padding: 16px;
+    font-size:42px;
 
-      }
+}
 
-      .category h2 {
+p{
 
-        font-size: 28px;
+    font-size:17px;
 
-      }
+}
 
-      .item h3 {
+input{
 
-        font-size: 24px;
+    font-size:17px;
+    padding:16px;
 
-      }
+}
 
-      .item p {
+button{
 
-        font-size: 17px;
+    font-size:17px;
+    padding:16px;
 
-      }
+}
 
-      .price {
+.category h2{
 
-        font-size: 20px;
+    font-size:28px;
 
-      }
+}
 
-      .dish-info {
+.item h3{
 
-        font-size: 17px;
-        line-height: 1.8;
+    font-size:24px;
 
-      }
+}
 
-    }
+.item p{
 
-  </style>
+    font-size:17px;
+
+}
+
+.price{
+
+    font-size:20px;
+
+}
+
+.dish-info{
+
+    font-size:17px;
+    line-height:1.8;
+
+}
+
+.language-bar button{
+
+    width:55px;
+
+}
+
+}
+
+</style>
 
 </head>
 
-<body>
+
+
+  <body>
 
 <div class="container">
 
- <h1>MenuAi App</h1>
+    <h1>MenuAi App</h1>
 
-<div style="text-align:center; margin:15px 0;">
+    <div class="language-bar">
 
-  <button onclick="changeLanguage('es')" style="width:60px;">
-    🇪🇸
-  </button>
+        <button onclick="changeLanguage('es')">
+            🇪🇸
+        </button>
 
-  <button onclick="changeLanguage('en')" style="width:60px;">
-    🇬🇧
-  </button>
+        <button onclick="changeLanguage('en')">
+            🇬🇧
+        </button>
 
-  <button onclick="changeLanguage('fr')" style="width:60px;">
-    🇫🇷
-  </button>
+        <button onclick="changeLanguage('fr')">
+            🇫🇷
+        </button>
 
-  <button onclick="changeLanguage('it')" style="width:60px;">
-    🇮🇹
-  </button>
+        <button onclick="changeLanguage('it')">
+            🇮🇹
+        </button>
 
-</div>
+    </div>
 
-<p>
-  Digitaliza cartas y menús de restaurantes al Instante con IA
-</p>
+    <p>
+        Digitaliza cartas y menús de restaurantes al instante con IA
+    </p>
 
-  <input
-    type="text"
-    id="url"
-    placeholder="Pegar URL carta digital o Web"
-  />
+    <input
+        type="text"
+        id="url"
+        placeholder="Pegar URL carta digital o Web"
+    />
 
-  <input
-    type="file"
-    id="imageFile"
-    accept="image/*"
-    capture="environment"
-  />
+    <input
+        type="file"
+        id="imageFile"
+        accept="image/*"
+        capture="environment"
+    />
 
-  <button onclick="extractMenu()">
-    📸 Digitaliza ahora
-  </button>
+    <button onclick="extractMenu()">
+        📸 Digitaliza ahora
+    </button>
 
-  <hr>
+    <hr>
 
+    <button onclick="exportCSV()">
+        Exportar CS   
+    </button>
 
-  <button onclick="exportCSV()">
-    Exportar CSV
-  </button>
-
-  <div id="result"></div>
+    <div id="result"></div>
 
 </div>
 
 <script>
 
-let currentMenu = [];
+//=====================================
+// VARIABLES
+//=====================================
 
+let currentMenu = [];
 let currentLanguage = "es";
+
+
+//=====================================
+// EXTRAER MENU
+//=====================================
 
 async function extractMenu() {
 
@@ -327,178 +369,133 @@ async function extractMenu() {
   const menu =
     JSON.parse(data.parsedMenu);
 
-  const items =
+  currentMenu =
     menu.items;
 
-  currentMenu = items;
+  renderMenu(currentMenu);
 
-  renderMenu(items);
+}
 
-async function getDishInfo(
-  dishName,
-  category,
-  button
-)
-{
 
-  const infoBox =
-    button.parentElement.querySelector(".dish-info");
 
-  infoBox.style.display =
-    "block";
+//=====================================
+// PINTAR MENU
+//=====================================
 
-  infoBox.innerHTML =
-    "🤖 Pensando...";
+function renderMenu(items) {
 
-  try {
+  let html = "";
 
-    const response =
-      await fetch("/dish-info", {
+  let currentCategory = "";
 
-        method: "POST",
+  items.forEach(item => {
 
-        headers: {
-          "Content-Type": "application/json"
-        },
+    if (item.category !== currentCategory) {
 
-        body: JSON.stringify({
+      currentCategory =
+        item.category;
 
-          dishName: dishName,
-          category: category,
-
-          restaurant: "Restaurant"
-
-        })
-
-      });
-
-    const data =
-      await response.json();
-
-    if (!data.success) {
-
-      infoBox.innerHTML =
-        data.error;
-
-      return;
+      html += `
+        <div class="category">
+          <h2>${currentCategory}</h2>
+        </div>
+      `;
 
     }
 
-    infoBox.innerHTML =
-      data.info;
+    html += `
 
-  } catch (error) {
+      <div class="item">
 
-    infoBox.innerHTML =
-      error.message;
+        <h3>${item.name}</h3>
 
-  }
+        <p>${item.description || ""}</p>
 
-}
+        <div class="price">
+          ${item.price || ""}
+        </div>
 
+        <button
+          onclick="getDishInfo(
+            '${item.name}',
+            '${item.category}',
+            this
+          )">
 
-function exportCSV() {
+          ✨ More Info
 
-  if (currentMenu.length === 0) {
+        </button>
 
-    alert("No menu loaded");
+        <div class="dish-info"></div>
 
-    return;
+      </div>
 
-  }
+    `;
 
-  let csv =
-  "Categoria,Plato,Descripcion,Precio\n";
+  });
 
-  currentMenu.forEach(item => {
-
-  csv += `"${item.category || ""}","${item.name || ""}","${item.description || ""}","${item.price || ""}"\n`;
-
-});
-
-
-  const blob =
-    new Blob([csv], {
-
-      type: "text/csv"
-
-    });
-
-  const url =
-    window.URL.createObjectURL(blob);
-
-  const a =
-    document.createElement("a");
-
-  a.href = url;
-
-  a.download = "menu.csv";
-
-  a.click();
+  document.getElementById("result").innerHTML =
+    html;
 
 }
 
-  async function changeLanguage(language) {
+  //=====================================
+// RENDER MENU
+//=====================================
 
-  currentLanguage = language;
+function renderMenu(items) {
 
-  console.log(
-    "Idioma seleccionado:",
-    language
-  );
+  let html = "";
 
-  if (currentMenu.length === 0) {
+  let currentCategory = "";
 
-    alert(
-      "Primero digitaliza una carta."
-    );
+  items.forEach(item => {
 
-    return;
+    if (item.category !== currentCategory) {
 
-  }
+      currentCategory = item.category;
 
-  try {
+      html += `
+        <div class="category">
+          <h2>${currentCategory}</h2>
+        </div>
+      `;
 
-    const response =
-      await fetch("/translate", {
+    }
 
-        method: "POST",
+    html += `
+      <div class="item">
 
-        headers: {
+        <h3>${item.name || ""}</h3>
 
-          "Content-Type":
-            "application/json"
+        <p>${item.description || ""}</p>
 
-        },
+        <div class="price">
+          ${item.price || ""}
+        </div>
 
-        body: JSON.stringify({
+        <button
+          onclick="getDishInfo(
+            '${item.name}',
+            '${item.category}',
+            this
+          )">
 
-          language: language,
+          ✨ More Info
 
-          menu: currentMenu
+        </button>
 
-        })
+        <div class="dish-info"></div>
 
-      });
+      </div>
+    `;
 
-    const data =
-      await response.json();
+  });
 
-    console.log(data);
-
-    alert(
-      "Servidor conectado correctamente."
-    );
-
-  } catch (error) {
-
-    alert(error.message);
-
-  }
+  document.getElementById("result").innerHTML = html;
 
 }
 
-</script>
+  
 
-</body>
-</html>
+  
