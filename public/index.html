@@ -378,38 +378,6 @@ async function extractMenu() {
 
 
 
-
-    html += `
-
-      <div class="item">
-
-        <h3>${item.name}</h3>
-
-        <p>${item.description || ""}</p>
-
-        <div class="price">
-          ${item.price || ""}
-        </div>
-
-        <button
-          onclick="getDishInfo(
-            '${item.name}',
-            '${item.category}',
-            this
-          )">
-
-          ✨ More Info
-
-        </button>
-
-        <div class="dish-info"></div>
-
-      </div>
-
-    `;
-
-  });
-
   document.getElementById("result").innerHTML =
     html;
 
