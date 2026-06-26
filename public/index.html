@@ -332,60 +332,7 @@ async function extractMenu() {
 
   currentMenu = items;
 
-  let html = "";
-
-  let currentCategory = "";
-
-  items.forEach(item => {
-
-    if (item.category !== currentCategory) {
-
-      currentCategory =
-        item.category;
-
-      html += `
-        <div class="category">
-          <h2>${currentCategory}</h2>
-        </div>
-      `;
-
-    }
-
-    html += `
-      <div class="item">
-
-        <h3>${item.name}</h3>
-
-        <p>${item.description}</p>
-
-        <div class="price">
-          ${item.price}
-        </div>
-
-        <button
-         onclick="getDishInfo(
-  '${item.name}',
-  '${item.category}',
-  this
-)"
-        >
-
-          ✨ More Info
-
-        </button>
-
-        <div class="dish-info"></div>
-
-      </div>
-    `;
-
-  });
-
-  document.getElementById("result").innerHTML =
-    html;
-
-}
-
+  renderMenu(items);
 
 async function getDishInfo(
   dishName,
