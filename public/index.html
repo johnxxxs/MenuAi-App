@@ -5,7 +5,7 @@
 
 <meta charset="UTF-8">
 
-<meta
+<meta 
   name="viewport"
   content="width=device-width, initial-scale=1.0"
 />
@@ -378,30 +378,6 @@ async function extractMenu() {
 
 
 
-//=====================================
-// PINTAR MENU
-//=====================================
-
-function renderMenu(items) {
-
-  let html = "";
-
-  let currentCategory = "";
-
-  items.forEach(item => {
-
-    if (item.category !== currentCategory) {
-
-      currentCategory =
-        item.category;
-
-      html += `
-        <div class="category">
-          <h2>${currentCategory}</h2>
-        </div>
-      `;
-
-    }
 
     html += `
 
