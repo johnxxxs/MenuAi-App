@@ -368,8 +368,14 @@ async function extractMenu() {
 
     }
 
-    const menu =
-      JSON.parse(data.parsedMenu);
+    const cleanJson =
+  data.parsedMenu
+    .replace(/```json/g, "")
+    .replace(/```/g, "")
+    .trim();
+
+const menu =
+  JSON.parse(cleanJson);
 
     currentMenu =
       menu.items;
