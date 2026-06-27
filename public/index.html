@@ -304,8 +304,95 @@ button{
 
 </div>
 
+    <script>
+
+//==================================================
+// BLOQUE 01 - VARIABLES GLOBALES
+//==================================================
+
+let currentMenu = [];
+
+let currentLanguage = "es";
+
+//==================================================
+// BLOQUE 02 - EXTRAER MENU
+//==================================================
+
+async function extractMenu() {
+
+  document.getElementById("result").innerHTML =
+    "🤖 Digitalizando menú tardara un momento, paciencia por favor :-) ...";
+
+  const url =
+    document.getElementById("url").value;
+
+  const formData =
+    new FormData();
+
+  formData.append("url", url);
+
+  const imageFile =
+    document.getElementById("imageFile").files[0];
+
+  if (imageFile) {
+
+    formData.append(
+      "imageFile",
+      imageFile
+    );
+
+  }
+
+  try {
+
+    const response =
+      await fetch("/process", {
+
+        method: "POST",
+
+        body: formData
+
+      });
+
+    const data =
+      await response.json();
+
+    console.log(data);
+
+    if (!data.success) {
+
+      document.getElementById("result").innerHTML =
+        "❌ " + data.error;
+
+      return;
+
+    }
+
+    const menu =
+      JSON.parse(data.parsedMenu);
+
+    currentMenu =
+      menu.items;
+
+    renderMenu(currentMenu);
+
+  }
+
+  catch(error){
+
+    console.error(error);
+
+    document.getElementById("result").innerHTML =
+      "❌ Error de conexión con el servidor.";
+
+  }
+
+}
+
+      
 
 
   
 
   
+ <script>
