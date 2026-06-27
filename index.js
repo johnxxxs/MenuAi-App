@@ -3,7 +3,7 @@ require("dotenv").config();
 const fs = require("fs");
 const pdf = require("pdf-parse").default;
 const express = require("express");
-const path = require("path");
+const path = require("path"); 
 const multer = require("multer");
 const axios = require("axios");
 const cheerio = require("cheerio");
@@ -395,6 +395,9 @@ app.post("/translate", async (req, res) => {
 
     const menu =
       req.body.menu;
+
+    const menuJson =
+  JSON.stringify(menu, null, 2);
 
     console.log("==============");
     console.log("TRANSLATE");
