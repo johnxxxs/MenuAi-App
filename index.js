@@ -60,6 +60,8 @@ app.post(
       const imageFile =
         req.files?.imageFile?.[0];
 
+      console.log(imageFile);
+
       let text = "";
 
 
