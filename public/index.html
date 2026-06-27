@@ -586,62 +586,87 @@ function exportCSV() {
 // FIN BLOQUE 05
 //==================================================
 
-      //==================================================
-// BLOQUE 05 - EXPORTAR CSV
+//==================================================
+// BLOQUE 06 - CAMBIAR IDIOMA
 //==================================================
 
-function exportCSV() {
+async function changeLanguage(language) {
+
+  currentLanguage = language;
+
+  console.log(
+    "Idioma seleccionado:",
+    language
+  );
 
   if (currentMenu.length === 0) {
 
-    alert("No hay ningún menú digitalizado.");
+    alert(
+      "Primero digitaliza un menú."
+    );
 
     return;
 
   }
 
-  let csv =
-    "Categoria,Plato,Descripcion,Precio\n";
+  try {
 
-  currentMenu.forEach(item => {
+    const response =
+      await fetch("/translate", {
 
-    csv +=
-      `"${item.category || ""}",` +
-      `"${item.name || ""}",` +
-      `"${item.description || ""}",` +
-      `"${item.price || ""}"\n`;
+        method: "POST",
 
-  });
+        headers: {
 
-  const blob =
-    new Blob([csv], {
+          "Content-Type":
+            "application/json"
 
-      type: "text/csv;charset=utf-8;"
+        },
 
-    });
+        body: JSON.stringify({
 
-  const url =
-    window.URL.createObjectURL(blob);
+          language: language,
 
-  const a =
-    document.createElement("a");
+          menu: currentMenu
 
-  a.href = url;
+        })
 
-  a.download = "menu.csv";
+      });
 
-  document.body.appendChild(a);
+    const data =
+      await response.json();
 
-  a.click();
+    console.log(data);
 
-  document.body.removeChild(a);
+    if (!data.success) {
 
-  window.URL.revokeObjectURL(url);
+      alert(data.error);
+
+      return;
+
+    }
+
+    alert(
+      "✅ Comunicación con el servidor correcta.\n\nIdioma seleccionado: " +
+      language.toUpperCase()
+    );
+
+  }
+
+  catch(error){
+
+    console.error(error);
+
+    alert(
+      "❌ No se pudo conectar con el servidor."
+    );
+
+  }
 
 }
 
 //==================================================
-// FIN BLOQUE 05
+// FIN BLOQUE 06
 //==================================================
 
       
