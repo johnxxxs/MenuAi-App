@@ -594,6 +594,8 @@ async function changeLanguage(language) {
 
   currentLanguage = language;
 
+  translateInterface(language);
+
   console.log(
     "Idioma seleccionado:",
     language
