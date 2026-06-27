@@ -669,6 +669,128 @@ async function changeLanguage(language) {
 // FIN BLOQUE 06
 //==================================================
 
+
+//==================================================
+// BLOQUE 07 - TRADUCIR INTERFAZ
+//==================================================
+
+const interfaceTexts = {
+
+  es: {
+
+    title: "MenuAi App",
+
+    subtitle:
+      "Digitaliza cartas y menús de restaurantes al instante con IA",
+
+    placeholder:
+      "Pegar URL carta digital o Web",
+
+    scan:
+      "📸 Escanear Menú",
+
+    csv:
+      "Exportar CSV",
+
+    more:
+      "✨ More Info"
+
+  },
+
+  en: {
+
+    title: "MenuAi App",
+
+    subtitle:
+      "Digitize restaurant menus instantly with AI",
+
+    placeholder:
+      "Paste menu or website URL",
+
+    scan:
+      "📸 Scan Now",
+
+    csv:
+      "Export CSV",
+
+    more:
+      "✨ More Info"
+
+  },
+
+  fr: {
+
+    title: "MenuAi App",
+
+    subtitle:
+      "Numérisez instantanément les menus de restaurant avec l'IA",
+
+    placeholder:
+      "Coller l'URL du menu ou du site Web",
+
+    scan:
+      "📸 Scanner le menu",
+
+    csv:
+      "Exporter CSV",
+
+    more:
+      "✨ Plus d'informations"
+
+  },
+
+  it: {
+
+    title: "MenuAi App",
+
+    subtitle:
+      "Digitalizza istantaneamente i menu dei ristoranti con l'IA",
+
+    placeholder:
+      "Incolla l'URL del menu o del sito",
+
+    scan:
+      "📸 Scansiona menu",
+
+    csv:
+      "Esporta CSV",
+
+    more:
+      "✨ Maggiori informazioni"
+
+  }
+
+};
+
+function translateInterface(language){
+
+  const t = interfaceTexts[language];
+
+  document.querySelector("h1").innerText =
+    t.title;
+
+  document.querySelector("p").innerText =
+    t.subtitle;
+
+  document.getElementById("url").placeholder =
+    t.placeholder;
+
+  document.querySelector(
+    "button[onclick='extractMenu()']"
+  ).innerText =
+    t.scan;
+
+  document.querySelector(
+    "button[onclick='exportCSV()']"
+  ).innerText =
+    t.csv;
+
+}
+
+//==================================================
+// FIN BLOQUE 07
+//==================================================
+
       
 
 
