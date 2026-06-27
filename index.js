@@ -403,16 +403,72 @@ app.post("/translate", async (req, res) => {
     console.log("TRANSLATE");
     console.log(language);
 
-    return res.json({
+    const completion =
+  await openai.chat.completions.create({
 
-      success: true,
+    model: "gpt-4.1-mini",
 
-      language: language,
+    messages: [
 
-      menu: menu
+      {
 
-    });
+        role: "system",
 
+        content: `
+You are a professional restaurant menu translator.
+
+Translate the following menu into the requested language.
+
+IMPORTANT:
+
+- Return ONLY valid JSON.
+- Do NOT use markdown.
+- Do NOT write \`\`\`json.
+- Keep exactly the same JSON structure.
+- Do NOT modify prices.
+- Translate:
+  - category
+  - name
+  - description
+
+`
+
+      },
+
+      {
+
+        role: "user",
+
+        content:
+
+`Target language:
+
+${language}
+
+Menu:
+
+${menuJson}`
+
+      }
+
+    ]
+
+  });
+
+const translatedMenu =
+  completion.choices[0].message.content
+    .replace(/```json/g,"")
+    .replace(/```/g,"")
+    .trim();
+
+return res.json({
+
+  success: true,
+
+  menu: JSON.parse(translatedMenu)
+
+});
+    
   } catch (error) {
 
     return res.json({
