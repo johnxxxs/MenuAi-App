@@ -447,6 +447,80 @@ function renderMenu(items) {
 
 }
 
+      //==================================================
+// BLOQUE 04 - MORE INFO
+//==================================================
+
+async function getDishInfo(
+  dishName,
+  category,
+  button
+) {
+
+  const infoBox =
+    button.parentElement.querySelector(".dish-info");
+
+  infoBox.style.display =
+    "block";
+
+  infoBox.innerHTML =
+    "🤖 Pensando...";
+
+  try {
+
+    const response =
+      await fetch("/dish-info", {
+
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+
+          dishName: dishName,
+
+          category: category,
+
+          restaurant: "Restaurant"
+
+        })
+
+      });
+
+    const data =
+      await response.json();
+
+    if (!data.success) {
+
+      infoBox.innerHTML =
+        data.error;
+
+      return;
+
+    }
+
+    infoBox.innerHTML =
+      data.info;
+
+  }
+
+  catch(error){
+
+    console.error(error);
+
+    infoBox.innerHTML =
+      "❌ Error obteniendo información.";
+
+  }
+
+}
+
+//==================================================
+// FIN BLOQUE 04
+//==================================================
+
       
 
 
