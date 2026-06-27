@@ -594,6 +594,7 @@ async function changeLanguage(language) {
 
   currentLanguage = language;
 
+  // Cambia inmediatamente toda la interfaz
   translateInterface(language);
 
   console.log(
@@ -601,15 +602,17 @@ async function changeLanguage(language) {
     language
   );
 
-  if (currentMenu.length === 0) {
+  // Si todavía no existe un menú,
+  // simplemente terminamos aquí.
 
-    alert(
-      "Primero digitaliza un menú."
-    );
+  if (currentMenu.length === 0) {
 
     return;
 
   }
+
+  // Si existe un menú,
+  // pedimos su traducción al servidor.
 
   try {
 
@@ -638,8 +641,6 @@ async function changeLanguage(language) {
     const data =
       await response.json();
 
-    console.log(data);
-
     if (!data.success) {
 
       alert(data.error);
@@ -648,10 +649,11 @@ async function changeLanguage(language) {
 
     }
 
-    alert(
-      "✅ Comunicación con el servidor correcta.\n\nIdioma seleccionado: " +
-      language.toUpperCase()
-    );
+    // De momento solo comprobamos que responde.
+    // En el siguiente bloque aquí llegará
+    // el menú traducido.
+
+    console.log(data);
 
   }
 
@@ -660,7 +662,7 @@ async function changeLanguage(language) {
     console.error(error);
 
     alert(
-      "❌ No se pudo conectar con el servidor."
+      "❌ Error de comunicación con el servidor."
     );
 
   }
