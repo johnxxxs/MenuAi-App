@@ -653,7 +653,9 @@ async function changeLanguage(language) {
     // En el siguiente bloque aquí llegará
     // el menú traducido.
 
-    console.log(data);
+    currentMenu = data.menu;
+
+    renderMenu(currentMenu);
 
   }
 
