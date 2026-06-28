@@ -357,10 +357,8 @@ async function extractMenu() {
     const data =
       await response.json();
 
-    currentMenu = data.menu;
-
-renderMenu(currentMenu);
-
+    console.log(data);
+    
     if (!data.success) {
 
       document.getElementById("result").innerHTML =
