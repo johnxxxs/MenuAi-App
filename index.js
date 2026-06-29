@@ -464,11 +464,24 @@ const translatedMenu =
     .replace(/```/g,"")
     .trim();
 
+const translated =
+  JSON.parse(translatedMenu);
+
+// Añadimos el nombre original
+translated.forEach((item, index) => {
+
+  item.name_original =
+    originalMenu[index].name;
+
+});
+
 return res.json({
 
   success: true,
 
-  menu: JSON.parse(translatedMenu)
+  menu: translated
+
+});
 
 });
     
