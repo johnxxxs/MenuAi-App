@@ -123,21 +123,37 @@ app.post(
                 role: "system",
 
                 content: `
-You are a restaurant menu parser.
+You are an expert restaurant menu parser.
 
-Extract restaurant menu items into JSON.
+Your task is to analyse the restaurant menu image.
 
-Return ONLY JSON.
+Target language:
+${language}
+
+Rules:
+
+- Detect the original language of the menu.
+- If the target language is different, translate:
+  - category
+  - name
+  - description
+- Keep prices exactly as they appear.
+- Keep the same JSON structure.
+- Do NOT invent dishes.
+- Do NOT invent prices.
+- Return ONLY valid JSON.
+- Do NOT use Markdown.
+- Do NOT write \`\`\`json.
 
 Structure:
 
 {
-  "items": [
+  "items":[
     {
-      "category": "",
-      "name": "",
-      "description": "",
-      "price": ""
+      "category":"",
+      "name":"",
+      "description":"",
+      "price":""
     }
   ]
 }
@@ -153,7 +169,7 @@ Structure:
                     type: "text",
 
                     text:
-"Extract this restaurant menu"
+"Extract and translate this restaurant menu into the target language."
                   },
 
                   {
