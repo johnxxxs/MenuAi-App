@@ -13,7 +13,7 @@ const mime = require("mime-types");
 const app = express();
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
+apiKey: process.env.OPENAI_API_KEY
 });
 
 app.use(express.json());
@@ -21,7 +21,7 @@ app.use(express.json());
 app.use(express.static("public"));
 
 const upload = multer({
-  dest: "uploads/"
+dest: "uploads/"
 });
 
 
@@ -29,9 +29,9 @@ const upload = multer({
 
 app.get("/", (req, res) => {
 
-  res.sendFile(
-    path.join(__dirname, "public", "index.html")
-  );
+res.sendFile(
+path.join(__dirname, "public", "index.html")
+);
 
 });
 
@@ -40,89 +40,89 @@ app.get("/", (req, res) => {
 
 app.post(
 
-  "/process",
+"/process",
 
-  upload.fields([
-    { name: "pdfFile", maxCount: 1 },
-    { name: "imageFile", maxCount: 1 }
-  ]),
+upload.fields([
+{ name: "pdfFile", maxCount: 1 },
+{ name: "imageFile", maxCount: 1 }
+]),
 
-  async (req, res) => {
+async (req, res) => {
 
-    try {
+try {
 
-      const url =
-        req.body.url;
+const url =
+req.body.url;
 
-      const language =
-      req.body.language || "es";
+const language =
+req.body.language || "es";
 
-      console.log(
-      "Idioma solicitado:",
-      language
+console.log(
+"Idioma solicitado:",
+language
 );
 
-      const pdfFile =
-        req.files?.pdfFile?.[0];
+const pdfFile =
+req.files?.pdfFile?.[0];
 
-      const imageFile =
-        req.files?.imageFile?.[0];
+const imageFile =
+req.files?.imageFile?.[0];
 
-      console.log(imageFile);
+console.log(imageFile);
 
-      let text = "";
-
-
-
-      // URL MODE
-
-      if (url) {
-
-        console.log("URL RECEIVED");
-
-        const response =
-          await axios.get(url);
-
-        const html =
-          response.data;
-
-        const $ =
-          cheerio.load(html);
-
-        text =
-          $("body").text();
-
-      }
+let text = "";
 
 
 
-      // IMAGE MODE
+// URL MODE
 
-      else if (imageFile) {
+if (url) {
 
-        console.log("IMAGE RECEIVED");
+console.log("URL RECEIVED");
 
-        const imageBuffer =
-          fs.readFileSync(imageFile.path);
+const response =
+await axios.get(url);
 
-        const base64Image =
-          imageBuffer.toString("base64");
+const html =
+response.data;
 
-        const mimeType =
-          mime.lookup(imageFile.originalname)
-          || "image/jpeg";
+const $ =
+cheerio.load(html);
 
-        const completion =
-          await openai.chat.completions.create({
+text =
+$("body").text();
 
-            model: "gpt-4.1-mini",
+}
 
-            messages: [
 
-              {
-                role: "system",
 
-                content: `
+// IMAGE MODE
+
+else if (imageFile) {
+
+console.log("IMAGE RECEIVED");
+
+const imageBuffer =
+fs.readFileSync(imageFile.path);
+
+const base64Image =
+imageBuffer.toString("base64");
+
+const mimeType =
+mime.lookup(imageFile.originalname)
+|| "image/jpeg";
+
+const completion =
+await openai.chat.completions.create({
+
+model: "gpt-4.1-mini",
+
+messages: [
+
+{
+role: "system",
+
+content: `
 You are an expert restaurant menu parser.
 
 Your task is to analyse the restaurant menu image.
@@ -134,9 +134,9 @@ Rules:
 
 - Detect the original language of the menu.
 - If the target language is different, translate:
-  - category
-  - name
-  - description
+ - category
+ - name
+ - description
 - Keep prices exactly as they appear.
 - Keep the same JSON structure.
 - Do NOT invent dishes.
@@ -148,26 +148,30 @@ Rules:
 Structure:
 
 {
-  "items":[
-    {
-      "category":"",
-      "name":"",
-      "description":"",
-      "price":""
-    }
-  ]
+ "items":[
+   {
+     "category":"",
+     "name":"",
+     "description":"",
+     "price":""
+   }
+ ]
 }
 `
-              },
+},
 
-              {
-                role: "user",
+{
+role: "user",
 
-                content: [
+content: [
 
-                  {
+{
+                    type: "text",
   type: "text",
 
+                    text:
+"Extract and translate this restaurant menu into the target language."
+                  },
   text:
 `Extract this restaurant menu.
 
@@ -185,90 +189,90 @@ Do not write \`\`\`json.
 `
 },
 
-                  {
-                    type: "image_url",
+{
+type: "image_url",
 
-                    image_url: {
+image_url: {
 
-                      url:
+url:
 `data:${mimeType};base64,${base64Image}`
 
-                    }
+}
 
-                  }
+}
 
-                ]
+]
 
-              }
+}
 
-            ]
+]
 
-          });
+});
 
-        const parsedMenu =
-          completion.choices[0].message.content;
+const parsedMenu =
+completion.choices[0].message.content;
 
-        return res.json({
+return res.json({
 
-          success: true,
+success: true,
 
-          parsedMenu: parsedMenu
+parsedMenu: parsedMenu
 
-        });
+});
 
-      }
-
-
-
-      // PDF MODE
-
-      else if (pdfFile) {
-
-        console.log("PDF RECEIVED");
-
-        const pdfBuffer =
-          fs.readFileSync(pdfFile.path);
-
-        const pdfData =
-          await pdf(pdfBuffer);
-
-        text =
-          pdfData.text;
-
-      }
+}
 
 
 
-      else {
+// PDF MODE
 
-        return res.json({
+else if (pdfFile) {
 
-          success: false,
+console.log("PDF RECEIVED");
 
-          error: "No URL, image or PDF received"
+const pdfBuffer =
+fs.readFileSync(pdfFile.path);
 
-        });
+const pdfData =
+await pdf(pdfBuffer);
 
-      }
+text =
+pdfData.text;
+
+}
 
 
 
-      // TEXT TO OPENAI
+else {
 
-      const menuText =
-        text.substring(0, 40000);
+return res.json({
 
-      const completion =
-        await openai.chat.completions.create({
+success: false,
 
-          model: "gpt-4.1-mini",
+error: "No URL, image or PDF received"
 
-          messages: [
+});
 
-            {
-              role: "system",
+}
 
-              content: `
+
+
+// TEXT TO OPENAI
+
+const menuText =
+text.substring(0, 40000);
+
+const completion =
+await openai.chat.completions.create({
+
+model: "gpt-4.1-mini",
+
+messages: [
+
+{
+role: "system",
+
+content: `
 You are a restaurant menu parser.
 
 Extract restaurant menu items into JSON.
@@ -278,54 +282,54 @@ Return ONLY JSON.
 Structure:
 
 {
-  "items": [
-    {
-      "category": "",
-      "name": "",
-      "description": "",
-      "price": ""
-    }
-  ]
+ "items": [
+   {
+     "category": "",
+     "name": "",
+     "description": "",
+     "price": ""
+   }
+ ]
 }
 `
-            },
+},
 
-            {
-              role: "user",
+{
+role: "user",
 
-              content: menuText
-            }
+content: menuText
+}
 
-          ]
+]
 
-        });
+});
 
-      const parsedMenu =
-        completion.choices[0].message.content;
+const parsedMenu =
+completion.choices[0].message.content;
 
-      return res.json({
+return res.json({
 
-        success: true,
+success: true,
 
-        parsedMenu: parsedMenu
+parsedMenu: parsedMenu
 
-      });
+});
 
-    } catch (error) {
+} catch (error) {
 
-      console.log(error);
+console.log(error);
 
-      return res.json({
+return res.json({
 
-        success: false,
+success: false,
 
-        error: error.message
+error: error.message
 
-      });
+});
 
-    }
+}
 
-  }
+}
 
 );
 
@@ -334,57 +338,49 @@ Structure:
 
 app.post("/dish-info", async (req, res) => {
 
-  try {
+try {
 
-    const dishName =
-      req.body.dishName;
+const dishName =
+req.body.dishName;
 
-    const restaurant =
-      req.body.restaurant;
-    
-    const category =
-  req.body.category;
+const restaurant =
+req.body.restaurant;
 
-    const completion =
-      await openai.chat.completions.create({
+const category =
+req.body.category;
 
-        model: "gpt-4.1-mini",
+const completion =
+await openai.chat.completions.create({
 
-        messages: [
+model: "gpt-4.1-mini",
 
-          {
-            role: "system",
+messages: [
 
-            content: `
-Eres un experto gastronómico.
+{
+role: "system",
 
-Responde SIEMPRE en el idioma solicitado por el usuario.
+content: `
+Eres un asistente gastronómico experto.
 
-El usuario está sentado en un restaurante y necesita decidir qué pedir.
+Responde SIEMPRE en español castellano.
 
-Devuelve una explicación breve y útil.
+Explica los platos de manera cercana, profesional y cultural.
 
-Incluye únicamente:
+Incluye:
 
-- Qué es el plato.
-- Ingredientes principales.
-- Sabor predominante.
-- Si contiene carne, pescado o marisco (si es relevante).
+- descripción
+- ingredientes
+- historia
 
-Reglas:
-
-- Máximo 300 caracteres.
-- Un único párrafo.
-- No escribas títulos.
-- No escribas "Claro".
-- No saludes.
-- No uses Markdown.
-- No cuentes la historia del plato.
+Máximo 500 caracteres
+La respuesta debe ser agradable de leer.
 `
+},
 
-dioma:
-${req.body.language || "es"}
-              
+{
+role: "user",
+
+content: `
 Categoría:
 ${category}
 
@@ -394,36 +390,36 @@ ${dishName}
 Restaurante:
 ${restaurant}
 `
-          }
+}
 
-        ]
+]
 
-      });
+});
 
-    const info =
-      completion.choices[0].message.content;
+const info =
+completion.choices[0].message.content;
 
-    return res.json({
+return res.json({
 
-      success: true,
+success: true,
 
-      info: info
+info: info
 
-    });
+});
 
-  } catch (error) {
+} catch (error) {
 
-    console.log(error);
+console.log(error);
 
-    return res.json({
+return res.json({
 
-      success: false,
+success: false,
 
-      error: error.message
+error: error.message
 
-    });
+});
 
-  }
+}
 
 });
 
@@ -433,33 +429,33 @@ ${restaurant}
 
 app.post("/translate", async (req, res) => {
 
-  try {
+try {
 
-    const language =
-      req.body.language;
+const language =
+req.body.language;
 
-    const menu =
-      req.body.menu;
+const menu =
+req.body.menu;
 
-    const menuJson =
-  JSON.stringify(menu, null, 2);
+const menuJson =
+JSON.stringify(menu, null, 2);
 
-    console.log("==============");
-    console.log("TRANSLATE");
-    console.log(language);
+console.log("==============");
+console.log("TRANSLATE");
+console.log(language);
 
-    const completion =
-  await openai.chat.completions.create({
+const completion =
+await openai.chat.completions.create({
 
-    model: "gpt-4.1-mini",
+model: "gpt-4.1-mini",
 
-    messages: [
+messages: [
 
-      {
+{
 
-        role: "system",
+role: "system",
 
-        content: `
+content: `
 You are a professional restaurant menu translator.
 
 Translate the following menu into the requested language.
@@ -472,19 +468,19 @@ IMPORTANT:
 - Keep exactly the same JSON structure.
 - Do NOT modify prices.
 - Translate:
-  - category
-  - name
-  - description
+ - category
+ - name
+ - description
 
 `
 
-      },
+},
 
-      {
+{
 
-        role: "user",
+role: "user",
 
-        content:
+content:
 
 `Target language:
 
@@ -494,37 +490,37 @@ Menu:
 
 ${menuJson}`
 
-      }
+}
 
-    ]
+]
 
-  });
+});
 
 const translatedMenu =
-  completion.choices[0].message.content
-    .replace(/```json/g,"")
-    .replace(/```/g,"")
-    .trim();
+completion.choices[0].message.content
+.replace(/```json/g,"")
+.replace(/```/g,"")
+.trim();
 
 return res.json({
 
-  success: true,
+success: true,
 
-  menu: JSON.parse(translatedMenu)
+menu: JSON.parse(translatedMenu)
 
 });
-    
-  } catch (error) {
 
-    return res.json({
+} catch (error) {
 
-      success: false,
+return res.json({
 
-      error: error.message
+success: false,
 
-    });
+error: error.message
 
-  }
+});
+
+}
 
 });
 
@@ -532,8 +528,8 @@ return res.json({
 
 app.listen(3000, () => {
 
-  console.log(
-    "MenuAi App running on http://localhost:3000"
-  );
+console.log(
+"MenuAi App running on http://localhost:3000"
+);
 
 });
