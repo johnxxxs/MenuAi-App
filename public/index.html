@@ -326,10 +326,16 @@ async function extractMenu() {
   const url =
     document.getElementById("url").value;
 
-  const formData =
-    new FormData();
+const formData =
+  new FormData();
 
-  formData.append("url", url);
+formData.append("url", url);
+
+// Enviamos también el idioma seleccionado
+formData.append(
+  "language",
+  currentLanguage
+);
 
   const imageFile =
     document.getElementById("imageFile").files[0];
