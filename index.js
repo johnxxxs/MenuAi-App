@@ -166,14 +166,14 @@ role: "user",
 content: [
 
 {
- 
-  type: "text",
+  role: "user",
 
-                    text:
-"Extract and translate this restaurant menu into the target language."
-                  },
-  text:
-`Extract this restaurant menu.
+  content: [
+
+    {
+      type: "text",
+
+      text: `Extract this restaurant menu.
 
 Target language: ${language}
 
@@ -187,28 +187,24 @@ Return ONLY valid JSON.
 Do not use Markdown.
 Do not write \`\`\`json.
 `
-},
+    },
 
-{
-type: "image_url",
+    {
+      type: "image_url",
 
-image_url: {
+      image_url: {
 
-url:
-`data:${mimeType};base64,${base64Image}`
+        url: `data:${mimeType};base64,${base64Image}`
+
+      }
+
+    }
+
+  ]
 
 }
 
-}
-
-]
-
-}
-
-]
-
-});
-
+ 
 const parsedMenu =
 completion.choices[0].message.content;
 
