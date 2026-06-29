@@ -396,6 +396,9 @@ app.post("/translate", async (req, res) => {
     const menu =
       req.body.menu;
 
+    const originalMenu =
+  JSON.parse(JSON.stringify(menu));
+
     const menuJson =
   JSON.stringify(menu, null, 2);
 
