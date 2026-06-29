@@ -54,6 +54,14 @@ app.post(
       const url =
         req.body.url;
 
+      const language =
+      req.body.language || "es";
+
+      console.log(
+      "Idioma solicitado:",
+      language
+);
+
       const pdfFile =
         req.files?.pdfFile?.[0];
 
