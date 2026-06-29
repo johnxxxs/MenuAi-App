@@ -356,27 +356,35 @@ app.post("/dish-info", async (req, res) => {
             role: "system",
 
             content: `
-Eres un asistente gastronómico experto.
+Eres un experto gastronómico.
 
-Responde SIEMPRE en español castellano.
+Responde SIEMPRE en el idioma solicitado por el usuario.
 
-Explica los platos de manera cercana, profesional y cultural.
+El usuario está sentado en un restaurante y necesita decidir qué pedir.
 
-Incluye:
+Devuelve una explicación breve y útil.
 
-- descripción
-- ingredientes
-- historia
-- curiosidades gastronómicas
+Incluye únicamente:
 
-La respuesta debe ser agradable de leer.
+- Qué es el plato.
+- Ingredientes principales.
+- Sabor predominante.
+- Si contiene carne, pescado o marisco (si es relevante).
+
+Reglas:
+
+- Máximo 300 caracteres.
+- Un único párrafo.
+- No escribas títulos.
+- No escribas "Claro".
+- No saludes.
+- No uses Markdown.
+- No cuentes la historia del plato.
 `
-          },
 
-          {
-            role: "user",
-
-            content: `
+dioma:
+${req.body.language || "es"}
+              
 Categoría:
 ${category}
 
