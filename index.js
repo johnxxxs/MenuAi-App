@@ -166,11 +166,24 @@ Structure:
                 content: [
 
                   {
-                    type: "text",
+  type: "text",
 
-                    text:
-"Extract and translate this restaurant menu into the target language."
-                  },
+  text:
+`Extract this restaurant menu.
+
+Target language: ${language}
+
+If the menu is not already in that language, translate:
+
+- category
+- name
+- description
+
+Return ONLY valid JSON.
+Do not use Markdown.
+Do not write \`\`\`json.
+`
+},
 
                   {
                     type: "image_url",
