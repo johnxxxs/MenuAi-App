@@ -94,86 +94,82 @@ $("body").text();
 
 }
 
-
-
 // IMAGE MODE
 
 else if (imageFile) {
 
-console.log("IMAGE RECEIVED");
+  console.log("IMAGE RECEIVED");
 
-const imageBuffer =
-fs.readFileSync(imageFile.path);
+  const imageBuffer =
+    fs.readFileSync(imageFile.path);
 
-const base64Image =
-imageBuffer.toString("base64");
+  const base64Image =
+    imageBuffer.toString("base64");
 
-const mimeType =
-mime.lookup(imageFile.originalname)
-|| "image/jpeg";
+  const mimeType =
+    mime.lookup(imageFile.originalname)
+    || "image/jpeg";
 
-const completion =
-await openai.chat.completions.create({
+  const completion =
+    await openai.chat.completions.create({
 
-model: "gpt-4.1-mini",
+      model: "gpt-4.1-mini",
 
-messages: [
+      messages: [
 
-{
-role: "system",
+        {
 
-content: `
+          role: "system",
+
+          content: `
 You are an expert restaurant menu parser.
 
-Your task is to analyse the restaurant menu image.
+Analyse the restaurant menu image.
 
 Target language:
 ${language}
 
 Rules:
 
-- Detect the original language of the menu.
+- Detect the original language.
 - If the target language is different, translate:
- - category
- - name
- - description
+  - category
+  - name
+  - description
 - Keep prices exactly as they appear.
-- Keep the same JSON structure.
-- Do NOT invent dishes.
-- Do NOT invent prices.
+- Do not invent dishes.
+- Do not invent prices.
 - Return ONLY valid JSON.
-- Do NOT use Markdown.
-- Do NOT write \`\`\`json.
+- Do not use Markdown.
+- Do not write \`\`\`json.
 
 Structure:
 
 {
- "items":[
-   {
-     "category":"",
-     "name":"",
-     "description":"",
-     "price":""
-   }
- ]
+  "items":[
+    {
+      "category":"",
+      "name":"",
+      "description":"",
+      "price":""
+    }
+  ]
 }
 `
-},
 
-{
-role: "user",
+        },
 
-content: [
+        {
 
-{
-  role: "user",
+          role: "user",
 
-  content: [
+          content: [
 
-    {
-      type: "text",
+            {
 
-      text: `Extract this restaurant menu.
+              type: "text",
+
+              text: `Extract this restaurant menu.
 
 Target language: ${language}
 
@@ -185,41 +181,47 @@ If the menu is not already in that language, translate:
 
 Return ONLY valid JSON.
 Do not use Markdown.
-Do not write \`\`\`json.
-`
-    },
+Do not write \`\`\`json.`
 
-    {
-      type: "image_url",
+            },
 
-      image_url: {
+            {
 
-        url: `data:${mimeType};base64,${base64Image}`
+              type: "image_url",
 
-      }
+              image_url: {
 
-    }
+                url:
+                  `data:${mimeType};base64,${base64Image}`
 
-  ]
+              }
+
+            }
+
+          ]
+
+        }
+
+      ]
+
+    });
+
+  const parsedMenu =
+    completion.choices[0].message.content;
+
+  return res.json({
+
+    success: true,
+
+    parsedMenu: parsedMenu
+
+  });
 
 }
+
+
 
  
-const parsedMenu =
-completion.choices[0].message.content;
-
-return res.json({
-
-success: true,
-
-parsedMenu: parsedMenu
-
-});
-
-}
-
-
-
 // PDF MODE
 
 else if (pdfFile) {
