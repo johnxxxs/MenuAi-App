@@ -377,12 +377,20 @@ async function extractMenu() {
 const menu =
   JSON.parse(cleanJson);
 
-    currentMenu =
-      menu.items;
+  currentMenu = menu.items;
 
-    renderMenu(currentMenu);
+renderMenu(currentMenu);
 
-  }
+// Si el usuario ha elegido otro idioma,
+// traducimos automáticamente.
+
+if(currentLanguage !== "es"){
+
+    await changeLanguage(currentLanguage);
+
+}
+
+}
 
   catch(error){
 
